@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="MariaDb" id="MariaDb-1530" database="MariaDb" >
+	<schema name="dblibreria" >
+		<table name="autores" row_count="0" spec="" >
+			<column name="aut_codigo" type="INT" length="11" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="aut_nombres" type="VARCHAR" length="60" jt="12" mandatory="y" />
+			<column name="aut_apellidos" type="VARCHAR" length="60" jt="12" mandatory="y" />
+			<column name="aut_telefono" type="VARCHAR" length="30" jt="12" />
+			<column name="aut_fecha_reg" type="TIMESTAMP" jt="93" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
+			<column name="aut_fecha_actu" type="TIMESTAMP" jt="93" >
+				<column_options><![CDATA[ON UPDATE current_timestamp]]></column_options>
+			</column>
+			<index name="pk_autores" unique="PRIMARY_KEY" >
+				<column name="aut_codigo" />
+			</index>
+			<options><![CDATA[ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci]]></options>
+		</table>
+		<table name="libros" prior="tbl" >
+			<column name="lib_codigo" type="INT" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="lib_isbn" type="VARCHAR" length="30" jt="12" />
+			<column name="lib_nombre" type="VARCHAR" length="60" jt="12" mandatory="y" />
+			<column name="lib_descrip" type="TEXT" length="1000" jt="-1" />
+			<column name="lib_editorial" type="VARCHAR" length="60" jt="12" />
+			<column name="lib_genero" type="VARCHAR" length="60" jt="12" />
+			<column name="lib_nropaginas" type="INT" jt="4" />
+			<column name="lib_precio" type="NUMERIC" length="12" decimal="2" jt="2" />
+			<column name="lib_fecha_edicion" type="DATE" jt="91" />
+			<column name="lib_fecha_reg" type="TIMESTAMP" jt="93" >
+				<defo><![CDATA[CURRENT_TIMESTAMP]]></defo>
+			</column>
+			<column name="lib_fecha_actu" type="TIMESTAMP" jt="93" >
+				<column_options><![CDATA[ON UPDATE CURRENT_TIMESTAMP]]></column_options>
+			</column>
+			<column name="aut_codigo" type="INT" length="11" jt="4" mandatory="y" />
+			<index name="pk_libros" unique="PRIMARY_KEY" >
+				<column name="lib_codigo" />
+			</index>
+			<fk name="fk_libros_autores" to_schema="dblibreria" to_table="autores" update_action="cascade" >
+				<fk_column name="aut_codigo" pk="aut_codigo" />
+			</fk>
+			<options><![CDATA[engine=InnoDB]]></options>
+		</table>
+	</schema>
+	<layout name="Main Layout" id="Layout-a3f" show_relation="name" >
+		<entity schema="dblibreria" name="autores" color="3986C1" x="51" y="170" />
+		<entity schema="dblibreria" name="libros" color="C1D8EE" x="391" y="187" />
+		<callout x="51" y="51" pointer="Round" >
+			<comment><![CDATA[This is a layout. You can create multiple layouts with the same or different tables. 
+
+Edit tables by double-clicking the table headers.]]></comment>
+		</callout>
+	</layout>
+	<layout name="~Layout with Sample Tools" id="Layout-d5e" show_column_type="y" show_relation="name" >
+		<entity schema="dblibreria" name="autores" color="3986C1" x="51" y="51" />
+		<script name="SQL Editor" id="Editor-4fd" language="SQL" >
+			<string><![CDATA[SELECT
+	aut_codigo, aut_nombres, aut_fecha_reg, aut_fecha_actu
+FROM
+	dblibreria.autores s;]]></string>
+		</script>
+		<browser id="Browse-44d" name="Relational Data Explorer" confirm_updates="y" >
+			<browse_table schema="dblibreria" entity="autores" x="20" y="20" width="270" height="-60" />
+		</browser>
+		<form name="Report" id="Report-1a4d" template="Page" css="container-fluid" view="frame" >
+			<var name="samplePageNumber" type="4" value="0" mandatory="n" />
+			<var name="sampleRecordsPerPage" type="4" value="100" mandatory="n" />
+			<body name="Body" template="Grid" max_records="100" pos="0,0,0,0,f,f" layout="{{-2,-2,-2,-2,-1},{-2,-2,-2,-2}}" generate_path="y" scroll="n" html="n" header_rows="0" footer_rows="0" >
+				<cell type="label" name="Autores Data" template="H3" pos="0,0,1,0,l,c" />
+				<cell type="chart" name="Pie" template="Pie" pos="0,1,4,1,l,c" max_records="20" generate_path="y" >
+					<form_script type="DataSource" language="SQL" >
+						<var name="aut_codigo" type="4" />
+						<var name="aut_nombres" type="-1" />
+						<var name="aut_fecha_reg" type="93" />
+						<var name="aut_fecha_actu" type="93" />
+						<script ><![CDATA[SELECT * FROM dblibreria.autores]]></script>
+					</form_script>
+					<param name="item" value="aut_nombres" />
+					<param name="width" value="100%" />
+					<param name="title" value="Sample Chart" />
+					<param name="value" value="aut_codigo" />
+					<param name="height" value="400px" />
+				</cell>
+				<tableview name="sample" template="Table" max_records="100" css="sortable table table-striped table-sm table-hover" pos="0,2,4,2,f,f" layout="{{-2,-2,-2,-2,-2},{-2,-2}}" generate_path="y" scroll="n" html="n" header_rows="1" footer_rows="0" >
+					<form_script type="DataSource" language="SQL" >
+						<var name="aut_codigo" type="4" />
+						<var name="aut_nombres" type="-1" />
+						<var name="aut_fecha_reg" type="93" />
+						<var name="aut_fecha_actu" type="93" />
+						<script ><![CDATA[SELECT * FROM dblibreria.autores]]></script>
+					</form_script>
+					<cell type="label" name="aut_codigo" template="Plain" pos="0,0,0,0,c,c" />
+					<cell type="label" name="aut_nombres" template="Plain" pos="1,0,1,0,c,c" />
+					<cell type="label" name="aut_fecha_reg" template="Plain" pos="2,0,2,0,c,c" />
+					<cell type="label" name="aut_fecha_actu" template="Plain" pos="3,0,3,0,c,c" />
+					<cell type="label" name="${aut_codigo}" template="Plain" pos="0,1,0,1,l,c" />
+					<cell type="label" name="${aut_nombres}" template="Plain" pos="1,1,1,1,l,c" />
+					<cell type="label" name="${aut_fecha_reg}" template="Plain" pos="2,1,2,1,l,c" />
+					<cell type="label" name="${aut_fecha_actu}" template="Plain" pos="3,1,3,1,l,c" />
+					<cell type="button" name="More" template="Plain" css="btn btn-sm btn-secondary" pos="4,1,4,1,c,c" ref_id="Report-1a4d" />
+				</tableview>
+				<cell type="href" name="" template="Plain" disabled="${samplePageNumber&lt;1}" pos="0,3,0,3,l,c" glyph="bi-chevron_double_left" ref_id="Report-1a4d" >
+					<var name="samplePageNumber" value="0" />
+				</cell>
+				<cell type="href" name="" template="Plain" disabled="${samplePageNumber&lt;1}" pos="1,3,1,3,l,c" glyph="bi-chevron_left" ref_id="Report-1a4d" >
+					<var name="samplePageNumber" value="${Math.max(0,samplePageNumber-1)}" />
+				</cell>
+				<cell type="label" name="Page ${samplePageNumber+1}" template="Plain" pos="2,3,2,3,l,c" />
+				<cell type="href" name="" template="Plain" disabled="${!sampleHasNextPage}" pos="3,3,3,3,l,c" glyph="bi-chevron_right" ref_id="Report-1a4d" >
+					<var name="samplePageNumber" value="${( samplePageNumber+1 )}" />
+				</cell>
+			</body>
+		</form>
+	</layout>
+</project>
