@@ -2,6 +2,8 @@ package com.apirest.ejp1.dto;
 
 
 import com.apirest.ejp1.model.Autor;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +14,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class AutorDTO {
     private Integer codigo;
+    @Size(max = 50, message = "Logitud del campo de nombre exedido a 50")
+    @NotEmpty(message = "Campor nombre requerido")
     private String nombres;
+    @Size(max = 50, message = "Logitud del campo de apellido exedido a 50")
+    @NotEmpty(message = "Campo apellido requerido")
     private String apellidos;
     private String telefono;
     private LocalDateTime fechaRegistro;

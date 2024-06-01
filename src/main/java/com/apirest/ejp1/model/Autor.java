@@ -25,12 +25,10 @@ public class Autor {
     @Column(name = "aut_codigo")
     private Integer codigo;
     @Column(name = "aut_nombres")
-    @Size(max = 50, message = "Logitud del campo de nombre exedido a 50")
-    @NotEmpty(message = "Campor nombre requerido")
+
     private String nombres;
     @Column(name = "aut_apellidos")
-    @Size(max = 50, message = "Logitud del campo de apellido exedido a 50")
-    @NotEmpty(message = "Campo apellido requerido")
+
     private String apellidos;
     @Column(name = "aut_telefono")
     private String telefono;
